@@ -2,15 +2,10 @@
 
 namespace Tests\Large\Controllers;
 
-use Tests\TestCase;
+use Tests\Large\LargeTestCase;
 
-class PingControllerTest extends TestCase
+class PingControllerTest extends LargeTestCase
 {
-    protected function init(): void
-    {
-        //
-    }
-
     public function testPing(): void
     {
         $this->get(route('ping'))

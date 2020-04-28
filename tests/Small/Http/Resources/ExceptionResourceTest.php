@@ -6,10 +6,12 @@ use App\Http\Resources\ExceptionResource;
 use Exception;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Http\Resources\MissingValue;
-use Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use Tests\Small\SmallTestCase;
 
-class ExceptionResourceTest extends TestCase
+class ExceptionResourceTest extends SmallTestCase
 {
+    /** @var MockObject */
     protected $resource;
 
     protected function setUp(): void
