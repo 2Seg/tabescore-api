@@ -36,4 +36,7 @@ dump-autoload:
 	docker exec -it $(php) sh -c "composer dump-autoload"
 
 test:
-	docker exec -it $(php) sh -c "php artisan test"
+	docker exec -it $(php) sh -c "docker-php-ext-enable xdebug && vendor/bin/phpunit"
+
+tinker:
+	docker exec -it $(php) sh -c "php artisan tinker"

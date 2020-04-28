@@ -18,6 +18,12 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
+            <exclude>
+                <file>./app/Console/Kernel</file>
+                <file>./app/Http/Kernel</file>
+                <directory>./app/Facades</directory>
+                <directory>./app/Providers</directory>
+            </exclude>
         </whitelist>
     </filter>
     <php>
@@ -31,4 +37,8 @@
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
     </php>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
+        <log type="coverage-html" target="build" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
 </phpunit>
