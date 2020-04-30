@@ -10,6 +10,9 @@ build:
 	docker-compose build --no-cache  $(arg)
 build-up: build up
 
+up-testing:
+	docker-compose -f docker-compose.testing.yml up -d
+
 stop:
 	docker-compose stop
 
@@ -44,6 +47,9 @@ test-medium: testsuite=Medium
 test-medium: test
 test-large: testsuite=Large
 test-large: test
+
+test-testing:
+	docker exec -it $(php) sh -c "vendor/bin/phpunit"
 
 tinker:
 	docker exec -it $(php) sh -c "php artisan tinker"
