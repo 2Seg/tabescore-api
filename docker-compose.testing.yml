@@ -7,6 +7,6 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - .env
+      - .env.testing
     ports:
       - 8080:80

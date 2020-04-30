@@ -29,6 +29,9 @@ class ExceptionResourceTest extends SmallTestCase
 
     public function testToArrayInLocalEnv(): void
     {
+        app('config')->set('app.env', 'local');
+        app('config')->set('app.debug', true);
+
         $excepted = [
             'title'   => get_class($this->resource),
             'message' => '',
@@ -45,8 +48,9 @@ class ExceptionResourceTest extends SmallTestCase
         $this->assertEquals($excepted, $actual);
     }
 
-    public function testToArrayInLocalEnvWithoutDebug(): void
+    public function testToArrayInLocalEnvNoDebug(): void
     {
+        app('config')->set('app.env', 'local');
         app('config')->set('app.debug', false);
 
         $excepted = [
@@ -62,6 +66,7 @@ class ExceptionResourceTest extends SmallTestCase
     public function testToArrayInProductionEnv(): void
     {
         app('config')->set('app.env', 'production');
+        app('config')->set('app.debug', true);
 
         $excepted = [
             'title'   => get_class($this->resource),
@@ -73,10 +78,10 @@ class ExceptionResourceTest extends SmallTestCase
         $this->assertEquals($excepted, $actual);
     }
 
-    public function testToArrayInProductionEnvWithDebug(): void
+    public function testToArrayInProductionEnvNoDebug(): void
     {
         app('config')->set('app.env', 'production');
-        app('config')->set('app.debug', true);
+        app('config')->set('app.debug', false);
 
         $expected = [
             'title'   => get_class($this->resource),
@@ -91,6 +96,7 @@ class ExceptionResourceTest extends SmallTestCase
     public function testResolveInProductionEnv(): void
     {
         app('config')->set('app.env', 'production');
+        app('config')->set('app.debug', true); // doesn't matter
 
         $expected = ['error' => [
             'title'   => get_class($this->resource),

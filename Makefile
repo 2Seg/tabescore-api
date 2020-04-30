@@ -49,7 +49,7 @@ test-large: testsuite=Large
 test-large: test
 
 test-testing:
-	docker exec -it $(php) sh -c "vendor/bin/phpunit"
+	docker exec -it $(php) sh -c "php artisan test"
 
 tinker:
 	docker exec -it $(php) sh -c "php artisan tinker"
