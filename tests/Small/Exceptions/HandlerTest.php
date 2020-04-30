@@ -74,6 +74,6 @@ class HandlerTest extends SmallTestCase
             ->willReturn(true);
 
         $actual = $this->init()->render($request, $throwable);
-        $this->assertEquals($baseHandler->render($request, $throwable), $actual);
+        $this->assertContainsOnlyInstancesOf(JsonResponse::class, [$baseHandler->render($request, $throwable), $actual]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Small\Http\Resources;
 
+use Illuminate\Support\Arr;
 use App\Http\Resources\ExceptionResource;
 use Exception;
 use Illuminate\Http\Resources\MergeValue;
@@ -18,7 +19,7 @@ class ExceptionResourceTest extends SmallTestCase
     {
         parent::setUp();
 
-        $this->resource = $this->createMock(Exception::class);
+        $this->resource = $this->mock(Exception::class);
     }
 
     protected function init(): ExceptionResource
@@ -31,15 +32,17 @@ class ExceptionResourceTest extends SmallTestCase
         $excepted = [
             'title'   => get_class($this->resource),
             'message' => '',
-            new MergeValue(null),
+            new MergeValue([
+                'file'  => $this->resource->getFile(),
+                'line'  => $this->resource->getLine(),
+                'trace' => collect($this->resource->getTrace())->map(function ($trace) {
+                    return Arr::except($trace, ['args']);
+                })->all(),
+            ]),
         ];
 
         $actual = $this->init()->toArray(null);
-        $this->assertEquals(
-            array_slice($excepted, 0, 2),
-            array_slice($actual, 0, 2)
-        );
-        $this->assertInstanceOf(MergeValue::class, $actual[0]);
+        $this->assertEquals($excepted, $actual);
     }
 
     public function testToArrayInLocalEnvWithoutDebug(): void
