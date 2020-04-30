@@ -19,8 +19,8 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
             <exclude>
-                <file>./app/Console/Kernel</file>
-                <file>./app/Http/Kernel</file>
+                <file>./app/Http/Kernel.php</file>
+                <file>./app/Console/Kernel.php</file>
                 <directory>./app/Facades</directory>
                 <directory>./app/Providers</directory>
             </exclude>

@@ -1,4 +1,5 @@
-php = tabescore
+php       = tabescore
+testsuite = Small,Medium,Large
 
 status:
 	docker-compose ps
@@ -36,7 +37,13 @@ dump-autoload:
 	docker exec -it $(php) sh -c "composer dump-autoload"
 
 test:
-	docker exec -it $(php) sh -c "docker-php-ext-enable xdebug && vendor/bin/phpunit"
+	docker exec -it $(php) sh -c "docker-php-ext-enable xdebug && vendor/bin/phpunit --testsuite=$(testsuite)"
+test-small: testsuite=Small
+test-small: test
+test-medium: testsuite=Medium
+test-medium: test
+test-large: testsuite=Large
+test-large: test
 
 tinker:
 	docker exec -it $(php) sh -c "php artisan tinker"

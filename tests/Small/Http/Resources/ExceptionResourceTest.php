@@ -75,26 +75,26 @@ class ExceptionResourceTest extends SmallTestCase
         app('config')->set('app.env', 'production');
         app('config')->set('app.debug', true);
 
-        $excepted = [
+        $expected = [
             'title'   => get_class($this->resource),
             'message' => '',
             new MissingValue,
         ];
 
         $actual = $this->init()->toArray(null);
-        $this->assertEquals($excepted, $actual);
+        $this->assertEquals($expected, $actual);
     }
 
     public function testResolveInProductionEnv(): void
     {
         app('config')->set('app.env', 'production');
 
-        $excepted = ['error' => [
+        $expected = ['error' => [
             'title'   => get_class($this->resource),
             'message' => '',
         ]];
         $actual = $this->init()->resolve(null);
 
-        $this->assertEquals($excepted, $actual);
+        $this->assertEquals($expected, $actual);
     }
 }

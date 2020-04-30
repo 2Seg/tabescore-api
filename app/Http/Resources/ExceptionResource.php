@@ -13,7 +13,7 @@ class ExceptionResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'title'   => get_class($this->resource),
@@ -28,7 +28,7 @@ class ExceptionResource extends JsonResource
         ];
     }
 
-    public function resolve($request = null)
+    public function resolve($request = null): array
     {
         return ['error' => parent::resolve($request)];
     }
