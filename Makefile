@@ -40,7 +40,7 @@ dump-autoload:
 	docker exec -it $(php) sh -c "composer dump-autoload"
 
 test:
-	docker exec -it $(php) sh -c "docker-php-ext-enable xdebug && vendor/bin/phpunit --testsuite=$(testsuite)"
+	docker exec -it $(php) sh -c "vendor/bin/phpunit --testsuite=$(testsuite)"
 test-small: testsuite=Small
 test-small: test
 test-medium: testsuite=Medium
