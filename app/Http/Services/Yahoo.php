@@ -2,8 +2,6 @@
 
 namespace App\Http\Services;
 
-use Illuminate\Support\Facades\Http;
-
 class Yahoo extends AbstractService
 {
     const SMALL  = 'small';
@@ -25,11 +23,11 @@ class Yahoo extends AbstractService
      *
      * @link https://developer.yahoo.co.jp/webapi/shopping/shopping/v1/itemsearch.html
      *
-     * @param  int $jan
+     * @param  string $jan
      * @param  int $hits
      * @return array|null
      */
-    public function getProducts(int $jan, int $hits = 50): ?array
+    public function getProducts(string $jan, int $hits = 50): ?array
     {
         $url    = "{$this->url}/ShoppingWebService/V1/json/itemSearch";
         $params = array_merge($this->params, [
@@ -37,7 +35,7 @@ class Yahoo extends AbstractService
             'hits' => $hits,
         ]);
 
-        return Http::get($url, $params)->json();
+        return $this->get($url, $params);
     }
 
     /**
@@ -57,6 +55,6 @@ class Yahoo extends AbstractService
             'responsegroupe' => $detailLevel,
         ]);
 
-        return Http::get($url, $params)->json();
+        return $this->get($url, $params);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Services;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class SevenEleven extends AbstractService
 {
@@ -44,7 +43,7 @@ class SevenEleven extends AbstractService
             'CategoryCode' => $categoryCode ?? '',
         ]);
 
-        return Http::get($url, $params)->json();
+        return $this->get($url, $params);
     }
 
     /**
@@ -64,7 +63,7 @@ class SevenEleven extends AbstractService
             'KeywordIn'    => $keyword ?? '',
         ]);
 
-        return Http::get($url, $params)->json();
+        return $this->get($url, $params);
     }
 
     /**
@@ -82,7 +81,7 @@ class SevenEleven extends AbstractService
             'CategoryCode' => $categoryCode ?? '',
         ]);
 
-        return Http::get($url, $params)->json();
+        return $this->get($url, $params);
     }
 
     /**
@@ -100,7 +99,7 @@ class SevenEleven extends AbstractService
             'ProductCode' => $productCode ?? '',
         ]);
 
-        return Http::get($url, $params)->json();
+        return $this->get($url, $params);
     }
 
     /**

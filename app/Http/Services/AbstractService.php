@@ -2,6 +2,8 @@
 
 namespace App\Http\Services;
 
+use Illuminate\Support\Facades\Http;
+
 abstract class AbstractService
 {
     /** @var $string */
@@ -17,5 +19,17 @@ abstract class AbstractService
     {
         $this->url   = $url;
         $this->appId = $appId;
+    }
+
+    /**
+     * Perform a GET HTTP request
+     *
+     * @param  string $url
+     * @param  array $params
+     * @return array|null
+     */
+    protected function get(string $url, array $params = []): ?array
+    {
+        return Http::get($url, $params)->json();
     }
 }

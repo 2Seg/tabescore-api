@@ -37,8 +37,8 @@ class YahooTest extends SmallTestCase
 
     public function testGetProducts(): void
     {
-        $url = "{$this->url}/ShoppingWebService/V1/json/itemSearch";
-        $jan = 4902105033746;
+        $url    = "{$this->url}/ShoppingWebService/V1/json/itemSearch";
+        $jan    = '4902105033746';
         $params = [
             'appid' => $this->appId,
             'jan'   => $jan,
@@ -46,6 +46,7 @@ class YahooTest extends SmallTestCase
         ];
 
         Http::shouldReceive('get')
+            ->once()
             ->with($url, $params)
             ->andReturn($this->response);
 

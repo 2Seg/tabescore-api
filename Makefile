@@ -18,6 +18,7 @@ stop:
 
 down:
 	docker-compose down --rmi all -v --remove-orphans
+down-up: down up
 
 shell-php:
 	docker exec -it $(php) bash
