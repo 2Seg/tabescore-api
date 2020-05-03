@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-class Yahoo extends AbstractService
+class YahooService extends AbstractService
 {
     const SMALL  = 'small';
     const MEDIUM = 'medium';

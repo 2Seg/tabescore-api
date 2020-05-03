@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-class Rakuten extends AbstractService
+class RakutenService extends AbstractService
 {
     const JSON = 'json';
     const XML  = 'xml';

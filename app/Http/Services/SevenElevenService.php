@@ -4,7 +4,7 @@ namespace App\Http\Services;
 
 use Illuminate\Http\Request;
 
-class SevenEleven extends AbstractService
+class SevenElevenService extends AbstractService
 {
     const JSON = 'JSON';
     const XML  = 'XML';

@@ -4,7 +4,7 @@ namespace Tests\Small\Http\Services;
 
 use Mockery\MockInterface;
 use Tests\Small\SmallTestCase;
-use App\Http\Services\Rakuten;
+use App\Http\Services\RakutenService;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -34,9 +34,9 @@ class RakutenTest extends SmallTestCase
         Http::fake();
     }
 
-    protected function init(): Rakuten
+    protected function init(): RakutenService
     {
-        return new Rakuten;
+        return new RakutenService;
     }
 
     public function testGetProducts(): void
