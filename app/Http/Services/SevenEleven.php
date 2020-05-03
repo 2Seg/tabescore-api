@@ -5,7 +5,7 @@ namespace App\Http\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class SevenEleven extends ServiceAPI
+class SevenEleven extends AbstractService
 {
     const JSON = 'JSON';
     const XML  = 'XML';
@@ -34,16 +34,14 @@ class SevenEleven extends ServiceAPI
      *
      * @link https://7af.omni7.jp/af_static_site/API2.html
      *
-     * @param  string|null $categoryCode 4015522
-     * @param  string|null $keyword      ペットフード
+     * @param  string $categoryCode 401522
      * @return array|null
      */
-    public function getCategories(?string $categoryCode, ?string $keyword = null): ?array
+    public function getCategories(string $categoryCode): ?array
     {
         $url    = "{$this->url}/af_api/affiliate/rest/GetShoppingCategory";
         $params = $this->getParams($url, [
             'CategoryCode' => $categoryCode ?? '',
-            'KeywordIn'    => $keyword ?? '',
         ]);
 
         return Http::get($url, $params)->json();
@@ -70,20 +68,18 @@ class SevenEleven extends ServiceAPI
     }
 
     /**
-     * Get rankings from category/keyword
+     * Get rankings from category
      *
      * @link https://7af.omni7.jp/af_static_site/API4.html
      *
      * @param  string|null $categoryCode 4015522
-     * @param  string|null $keyword      ペットフード
      * @return array|null
      */
-    public function getRankings(?string $categoryCode, ?string $keyword = null): ?array
+    public function getRankings(?string $categoryCode): ?array
     {
         $url    = "{$this->url}/af_api/affiliate/rest/SearchRanking";
         $params = $this->getParams($url, [
             'CategoryCode' => $categoryCode ?? '',
-            'KeywordIn'    => $keyword ?? '',
         ]);
 
         return Http::get($url, $params)->json();

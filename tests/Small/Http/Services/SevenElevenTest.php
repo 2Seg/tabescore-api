@@ -59,10 +59,8 @@ class SevenElevenTest extends SmallTestCase
     {
         $url          = "{$this->url}/af_api/affiliate/rest/GetShoppingCategory";
         $categoryCode = '4015522';
-        $keyword      = 'ペットフード';
         $params       = array_merge($this->params, [
             'CategoryCode' => $categoryCode,
-            'KeywordIn'    => $keyword,
         ]);
         ksort($params);
         $signature    = ['Signature' => $this->sign($url, $params)];
@@ -77,7 +75,7 @@ class SevenElevenTest extends SmallTestCase
             ->once()
             ->andReturn([]);
 
-        $actual = $this->init()->getCategories($categoryCode, $keyword);
+        $actual = $this->init()->getCategories($categoryCode);
         $this->assertSame([], $actual);
     }
 
@@ -114,7 +112,6 @@ class SevenElevenTest extends SmallTestCase
         $keyword      = 'ペットフード';
         $params       = array_merge($this->params, [
             'CategoryCode' => $categoryCode,
-            'KeywordIn'    => $keyword,
         ]);
         ksort($params);
         $signature    = ['Signature' => $this->sign($url, $params)];

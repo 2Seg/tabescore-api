@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-abstract class ServiceAPI
+abstract class AbstractService
 {
     /** @var $string */
     protected $url;

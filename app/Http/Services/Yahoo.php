@@ -4,7 +4,7 @@ namespace App\Http\Services;
 
 use Illuminate\Support\Facades\Http;
 
-class Yahoo extends ServiceAPI
+class Yahoo extends AbstractService
 {
     const SMALL  = 'small';
     const MEDIUM = 'medium';
