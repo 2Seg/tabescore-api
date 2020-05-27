@@ -12,7 +12,11 @@ RUN docker-php-ext-install pdo_mysql \
         git \
         unzip \
         libpng-dev \
-    && pecl install xdebug \
+    && pecl install \
+        xdebug \
+        stats-2.0.3 \
     && a2enmod rewrite && service apache2 restart \
     && composer install --no-interaction \
-    && docker-php-ext-enable xdebug
+    && docker-php-ext-enable \
+        xdebug \
+        stats
