@@ -14,3 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('ping', 'PingController@ping')->name('ping');
+
+Route::prefix('products')->name('products.')->group(function () {
+    Route::get('/', 'ProductController@getScore')->name('score');
+});

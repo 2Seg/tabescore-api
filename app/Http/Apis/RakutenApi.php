@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Apis;
 
-class RakutenService extends AbstractService
+use Psr\Http\Message\ResponseInterface;
+
+class RakutenApi extends AbstractApi
 {
     const JSON = 'json';
     const XML  = 'xml';
@@ -30,9 +32,9 @@ class RakutenService extends AbstractService
      * @link https://webservice.rakuten.co.jp/api/productsearch/
      *
      * @param  string|null $keyword
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function getProducts(?string $keyword): ?array
+    public function getProducts(?string $keyword): ResponseInterface
     {
         $url    = "{$this->url}/services/api/IchibaItem/Search/20170706";
         $params = array_merge($this->params, [

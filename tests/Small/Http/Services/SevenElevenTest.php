@@ -6,7 +6,7 @@ use ReflectionClass;
 use Mockery\MockInterface;
 use Illuminate\Http\Request;
 use Tests\Small\SmallTestCase;
-use App\Http\Services\SevenElevenService;
+use App\Http\Apis\SevenElevenApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 
@@ -44,9 +44,9 @@ class SevenElevenTest extends SmallTestCase
         Http::fake();
     }
 
-    protected function init(): SevenElevenService
+    protected function init(): SevenElevenApi
     {
-        $sevenEleven = new SevenElevenService;
+        $sevenEleven = new SevenElevenApi;
         $reflection  = new ReflectionClass($sevenEleven);
         $property = $reflection->getProperty('params');
         $property->setAccessible(true);

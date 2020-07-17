@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Apis;
 
-class YahooService extends AbstractService
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Promise\PromiseInterface;
+
+class YahooApi extends AbstractApi
 {
     const SMALL  = 'small';
     const MEDIUM = 'medium';
@@ -25,36 +28,36 @@ class YahooService extends AbstractService
      *
      * @param  string $jan
      * @param  int $hits
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function getProducts(string $jan, int $hits = 50): ?array
+    public function getProducts(string $jan, int $hits = 50): ResponseInterface
     {
-        $url    = "{$this->url}/ShoppingWebService/V1/json/itemSearch";
+        $url    = "{$this->url}/ShoppingWebService/V3/itemSearch";
         $params = array_merge($this->params, [
-            'jan'  => $jan,
-            'hits' => $hits,
+            'jan_code'  => $jan,
+            'hits'      => $hits,
         ]);
 
         return $this->get($url, $params);
     }
 
     /**
-     * Get product detail
+     * Get product detail asynchronously
      *
      * @link https://developer.yahoo.co.jp/webapi/shopping/shopping/v1/itemlookup.html
      *
      * @param  string $code
      * @param  string $detailLevel
-     * @return array|null
+     * @return PromiseInterface
      */
-    public function getProduct(string $code, $detailLevel = self::LARGE): ?array
+    public function getProductAsync(string $code, $detailLevel = self::LARGE): PromiseInterface
     {
         $url    = "{$this->url}/ShoppingWebService/V1/json/itemLookup";
         $params = array_merge($this->params, [
             'itemcode'       => $code,
-            'responsegroupe' => $detailLevel,
+            'responsegroup'  => $detailLevel,
         ]);
 
-        return $this->get($url, $params);
+        return $this->getAsync($url, $params);
     }
 }

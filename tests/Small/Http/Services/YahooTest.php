@@ -3,7 +3,7 @@
 namespace Tests\Small\Http\Services;
 
 use Mockery\MockInterface;
-use App\Http\Services\YahooService;
+use App\Http\Apis\YahooApi;
 use Tests\Small\SmallTestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
@@ -30,9 +30,9 @@ class YahooTest extends SmallTestCase
         Http::fake();
     }
 
-    protected function init(): YahooService
+    protected function init(): YahooApi
     {
-        return new YahooService;
+        return new YahooApi;
     }
 
     public function testGetProducts(): void
@@ -63,11 +63,11 @@ class YahooTest extends SmallTestCase
     {
         $url         = "{$this->url}/ShoppingWebService/V1/json/itemLookup";
         $code        = 'v-drug_0270030-4902105033746x12';
-        $detailLevel = YahooService::SMALL;
+        $detailLevel = YahooApi::SMALL;
         $params      = [
             'appid'          => $this->appId,
             'itemcode'       => $code,
-            'responsegroupe' => $detailLevel,
+            'responsegroup'  => $detailLevel,
         ];
 
         Http::shouldReceive('get')

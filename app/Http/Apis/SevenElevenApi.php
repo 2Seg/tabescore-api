@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Http\Apis;
 
 use Illuminate\Http\Request;
+use Psr\Http\Message\ResponseInterface;
 
-class SevenElevenService extends AbstractService
+class SevenElevenApi extends AbstractApi
 {
     const JSON = 'JSON';
     const XML  = 'XML';
@@ -34,9 +35,9 @@ class SevenElevenService extends AbstractService
      * @link https://7af.omni7.jp/af_static_site/API2.html
      *
      * @param  string $categoryCode 401522
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function getCategories(string $categoryCode): ?array
+    public function getCategories(string $categoryCode): ResponseInterface
     {
         $url    = "{$this->url}/af_api/affiliate/rest/GetShoppingCategory";
         $params = $this->getParams($url, [
@@ -53,9 +54,9 @@ class SevenElevenService extends AbstractService
      *
      * @param  string|null $categoryCode 4015522
      * @param  string|null $keyword      ペットフード
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function getProducts(?string $categoryCode, ?string $keyword = null): ?array
+    public function getProducts(?string $categoryCode, ?string $keyword = null): ResponseInterface
     {
         $url    = "{$this->url}/af_api/affiliate/rest/SearchProduct";
         $params = $this->getParams($url, [
@@ -72,9 +73,9 @@ class SevenElevenService extends AbstractService
      * @link https://7af.omni7.jp/af_static_site/API4.html
      *
      * @param  string|null $categoryCode 4015522
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function getRankings(?string $categoryCode): ?array
+    public function getRankings(?string $categoryCode): ResponseInterface
     {
         $url    = "{$this->url}/af_api/affiliate/rest/SearchRanking";
         $params = $this->getParams($url, [
@@ -90,9 +91,9 @@ class SevenElevenService extends AbstractService
      * @link https://7af.omni7.jp/af_static_site/API5.html
      *
      * @param  string|null $productCode
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function getReviews(?string $productCode): ?array
+    public function getReviews(?string $productCode): ResponseInterface
     {
         $url    = "{$this->url}/af_api/affiliate/rest/SearchProductReview";
         $params = $this->getParams($url, [
