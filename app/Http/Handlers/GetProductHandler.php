@@ -32,9 +32,9 @@ class GetProductHandler implements HandlerInterface
     {
         $data = $request->only('jan');
 
-        $nutrients = $this->yahooOrchestrator->orchestrate($data);
-        $nutrient  = $this->nutrientService->getBestNutrient($nutrients);
-        $score     = $this->scoringService->getScore($nutrient);
+        $products = $this->yahooOrchestrator->orchestrate($data);
+        $product  = $this->nutrientService->getBestNutrient($products);
+        $score    = $this->scoringService->getScore($product);
 
         return $score;
     }

@@ -2,15 +2,13 @@
 
 namespace App\Http\Services;
 
-use Illuminate\Support\Collection;
-
 class ScoringService
 {
-    public function getScore(array $nutrients): array
+    public function getScore(array $product): array
     {
         $lowerScore = stats_cdf_normal(0.75, 0, 1, 2);
         $upperScore = stats_cdf_normal(0.999, 0, 1, 2);
-        $calories = $this->convertNutrientToCalory($nutrients);
+        $calories   = $this->convertNutrientToCalory($product);
 
         $lowerBounds = [];
         $lowerBounds[0] = 13 * 2300 / 100;
@@ -51,11 +49,25 @@ class ScoringService
         $totalScore = array_sum($scores);
 
         return [
-            'total'        => $totalScore,
-            'protein'      => $scores[0],
-            'lipid'        => $scores[1],
-            'carbohydrate' => $scores[2],
-            'salt'         => $scores[3],
+            'id'           => null,
+            'jan'          => $product['jan'],
+            'name'         => $product['name'],
+            'brand'        => $product['brand'],
+            'imageUrl'     => $product['imageUrl'],
+            'nutrients'    => [
+                'energy'       => (float) $product['energy'],
+                'protein'      => (float) $product['protein'],
+                'lipid'        => (float) $product['lipid'],
+                'carbohydrate' => (float) $product['carbohydrate'],
+                'salt'         => (float) $product['salt'],
+            ],
+            'score'        => [
+                'total'        => round($totalScore, 2),
+                'protein'      => round($scores[0], 2),
+                'lipid'        => round($scores[1], 2),
+                'carbohydrate' => round($scores[2], 2),
+                'salt'         => round($scores[3], 2),
+            ],
         ];
     }
 
@@ -70,28 +82,5 @@ class ScoringService
         $nutrient['salt']         *= $coefKcal * 1;
 
         return $nutrient;
-    }
-
-    protected function calculateScore(array $calories): array
-    {
-        $score = [];
-
-        $score['protein'] = $calories['protein'] >= 299
-            ? stats_dens_normal($calories['protein'], 299, 80.5) * 30
-            : stats_dens_normal($calories['protein'], 299, 149.5) * 30;
-
-        $score['lipid'] = $calories['lipid'] >= 690
-            ? (1 - stats_dens_normal($calories['lipid'], 690, 345)) * 30
-            : (1 - stats_dens_normal($calories['lipid'], 690, 115)) * 30;
-
-        $score['carbohydrate'] = $calories['carbohydrate'] >= 1495
-            ? (1 - stats_dens_normal($calories['carbohydrate'], 1495, 747.5)) * 30
-            : (1 - stats_dens_normal($calories['carbohydrate'], 1495, 172.5)) * 30;
-
-        $score['salt'] = (1 - stats_dens_normal($calories['carbohydrate'], 8, 4)) * 10;
-
-        $score['total'] = array_sum($score);
-
-        return $score;
     }
 }

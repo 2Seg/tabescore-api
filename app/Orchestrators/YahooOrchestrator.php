@@ -35,7 +35,7 @@ class YahooOrchestrator implements OrchestratorInterface
     public function orchestrate(array $data): Collection
     {
         $codes     = $this->yahooParser->parseCodes($this->yahooApi->getProducts($data['jan']));
-        $nutrients = collect();
+        $products = collect();
 
         $this->asyncService->makePool(
             function () use ($codes) {
@@ -45,13 +45,17 @@ class YahooOrchestrator implements OrchestratorInterface
                     };
                 }
             },
-            function (Response $response) use ($nutrients) {
-                $nutrients->add($this->nutrientParser->parse($this->yahooParser->parseNutrientString($response)));
+            function (Response $response) use ($data, $products) {
+                $products->add(array_merge(
+                    $nutrients = $this->nutrientParser->parse($this->yahooParser->parseNutrientString($response)),
+                    count($nutrients) > 0 ? ['jan' => $data['jan']] : [],
+                    count($nutrients) > 0 ? $this->yahooParser->parseProductInfo($response) : []
+                ));
             }
         )
             ->promise()
             ->wait();
 
-        return $nutrients->filter()->values();
+        return $products->filter()->values();
     }
 }
