@@ -12,4 +12,5 @@ script:
 notifications:
   email:
     on_success: never
+    on_failure: never
   slack: tabescore:6HPvZVbQMknO1gtwiWeMfmuW
