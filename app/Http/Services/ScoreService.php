@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-class ScoringService
+class ScoreService
 {
     public function getScore(array $product): array
     {
@@ -49,25 +49,11 @@ class ScoringService
         $totalScore = array_sum($scores);
 
         return [
-            'id'           => null,
-            'jan'          => $product['jan'],
-            'name'         => $product['name'],
-            'brand'        => $product['brand'],
-            'imageUrl'     => $product['imageUrl'],
-            'nutrients'    => [
-                'energy'       => (float) $product['energy'],
-                'protein'      => (float) $product['protein'],
-                'lipid'        => (float) $product['lipid'],
-                'carbohydrate' => (float) $product['carbohydrate'],
-                'salt'         => (float) $product['salt'],
-            ],
-            'score'        => [
-                'total'        => round($totalScore, 2),
-                'protein'      => round($scores[0], 2),
-                'lipid'        => round($scores[1], 2),
-                'carbohydrate' => round($scores[2], 2),
-                'salt'         => round($scores[3], 2),
-            ],
+            'total'        => round($totalScore, 2),
+            'protein'      => round($scores[0], 2),
+            'lipid'        => round($scores[1], 2),
+            'carbohydrate' => round($scores[2], 2),
+            'salt'         => round($scores[3], 2),
         ];
     }
 

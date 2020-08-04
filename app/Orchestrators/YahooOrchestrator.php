@@ -8,7 +8,6 @@ use GuzzleHttp\Psr7\Response;
 use App\Parsers\NutrientParser;
 use Illuminate\Support\Collection;
 use App\Http\Services\AsyncService;
-use App\Http\Responses\YahooResponse;
 
 class YahooOrchestrator implements OrchestratorInterface
 {
@@ -46,11 +45,13 @@ class YahooOrchestrator implements OrchestratorInterface
                 }
             },
             function (Response $response) use ($data, $products) {
-                $products->add(array_merge(
-                    $nutrients = $this->nutrientParser->parse($this->yahooParser->parseNutrientString($response)),
-                    count($nutrients) > 0 ? ['jan' => $data['jan']] : [],
-                    count($nutrients) > 0 ? $this->yahooParser->parseProductInfo($response) : []
-                ));
+                if (count($nutrients = $this->nutrientParser->parse($this->yahooParser->parseNutrientString($response))) > 0) {
+                    $products->add(array_merge(
+                        ['jan' => $data['jan']],
+                        $this->yahooParser->parseProductInfo($response),
+                        $nutrients
+                    ));
+                }
             }
         )
             ->promise()

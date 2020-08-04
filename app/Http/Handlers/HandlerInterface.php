@@ -13,5 +13,5 @@ interface HandlerInterface
      * @param  FormRequest $request
      * @return array
      */
-    public function handle(FormRequest $request): array;
+    public function handle(FormRequest $request): JsonResource;
 }
