@@ -11,11 +11,7 @@ class Product extends Model
         'name',
         'brand',
         'imageUrl',
-        'energy',
-        'protein',
-        'lipid',
-        'carbohydrate',
-        'salt',
+        'nutrients',
         'score',
     ];
 }

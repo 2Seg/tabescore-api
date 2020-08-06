@@ -23,6 +23,23 @@ class YahooParser implements ParserInterface
     }
 
     /**
+     * Parse product info from yahoo product response
+     *
+     * @param  ResponseInterface $response
+     * @return array
+     */
+    public function parseProductInfo(ResponseInterface $response): array
+    {
+        $product = collect(json_decode((string) $response->getBody(), true)['hits'][0]);
+
+        return [
+            'name'     => $product->get('name'),
+            'brand'    => $product->get('brand')['name'],
+            'imageUrl' => $product->get('image')['medium'],
+        ];
+    }
+
+    /**
      * Parce nutrient string from yahoo product response
      *
      * @param  ResponseInterface $response
@@ -31,22 +48,5 @@ class YahooParser implements ParserInterface
     public function parseNutrientString(ResponseInterface $response): string
     {
         return json_decode((string) $response->getBody(), true)['ResultSet'][0]['Result'][0]['SpAdditional'];
-    }
-
-    /**
-     * Parse product info from yahoo product response
-     *
-     * @param  ResponseInterface $response
-     * @return array
-     */
-    public function parseProductInfo(ResponseInterface $response): array
-    {
-        $product = json_decode((string) $response->getBody(), true)['ResultSet'][0]['Result'][0];
-
-        return [
-            'name'     => Arr::get($product, 'Name'),
-            'brand'    => Arr::get($product,'Store.Name'),
-            'imageUrl' => Arr::get($product, 'Image.Medium'),
-        ];
     }
 }

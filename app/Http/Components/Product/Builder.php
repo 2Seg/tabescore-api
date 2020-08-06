@@ -19,11 +19,7 @@ class Builder implements BuilderInterface
             'name',
             'brand',
             'imageUrl',
-            'energy',
-            'protein',
-            'lipid',
-            'carbohydrate',
-            'salt',
+            'nutrients',
             'score',
         ]));
     }

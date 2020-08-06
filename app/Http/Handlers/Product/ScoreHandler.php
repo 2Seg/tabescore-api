@@ -3,7 +3,6 @@
 namespace App\Http\Handlers\Product;
 
 use App\Services\NutrientService;
-use Illuminate\Http\JsonResponse;
 use App\Http\Services\ScoreService;
 use App\Http\Resources\ProductResource;
 use App\Http\Handlers\HandlerInterface;
@@ -11,7 +10,6 @@ use App\Http\Components\Product\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Orchestrators\YahooOrchestrator;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ScoreHandler implements HandlerInterface
 {
@@ -42,19 +40,16 @@ class ScoreHandler implements HandlerInterface
     {
         $data = $request->only('jan');
 
-        $productsData = $this->yahooOrchestrator->orchestrate($data);
+        $productArray = $this->yahooOrchestrator->orchestrate($data);
 
-        if (! $productsData->count() > 0) {
-            throw new NotFoundHttpException(__('errors.' . JsonResponse::HTTP_NOT_FOUND));
-        }
+        $productArray = array_merge($productArray, [
+            'nutrients' => $productArray['nutrients']->count() > 0
+                ? $nutrient = $this->nutrientService->getBestNutrient($productArray['nutrients']) : null,
+            'score'     => $productArray['nutrients']->count() > 0
+                ? $this->scoreService->getScore($nutrient) : null,
+        ]);
 
-        $productData  = $this->nutrientService->getBestProduct($productsData);
-        $scoreData    = $this->scoreService->getScore($productData);
-
-        $product = $this->productBuilder->build(array_merge(
-            $productData,
-            ['score' => $scoreData]
-        ));
+        $product = $this->productBuilder->build($productArray);
 
         return ProductResource::make($product);
     }

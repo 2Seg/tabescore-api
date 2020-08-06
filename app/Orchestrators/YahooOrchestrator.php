@@ -6,8 +6,9 @@ use App\Http\Apis\YahooApi;
 use App\Parsers\YahooParser;
 use GuzzleHttp\Psr7\Response;
 use App\Parsers\NutrientParser;
-use Illuminate\Support\Collection;
 use App\Http\Services\AsyncService;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class YahooOrchestrator implements OrchestratorInterface
 {
@@ -31,10 +32,19 @@ class YahooOrchestrator implements OrchestratorInterface
         $this->asyncService   = $asyncService;
     }
 
-    public function orchestrate(array $data): Collection
+    public function orchestrate(array $data): array
     {
-        $codes     = $this->yahooParser->parseCodes($this->yahooApi->getProducts($data['jan']));
-        $products = collect();
+        $response    = $this->yahooApi->getProducts($data['jan']);
+        $codes       = $this->yahooParser->parseCodes($response);
+
+        throw_unless(
+            count($codes) > 0,
+            NotFoundHttpException::class,
+            __('errors.' . JsonResponse::HTTP_NOT_FOUND)
+        );
+
+        $product     = $this->yahooParser->parseProductInfo($response);
+        $nutrients   = collect();
 
         $this->asyncService->makePool(
             function () use ($codes) {
@@ -44,19 +54,18 @@ class YahooOrchestrator implements OrchestratorInterface
                     };
                 }
             },
-            function (Response $response) use ($data, $products) {
-                if (count($nutrients = $this->nutrientParser->parse($this->yahooParser->parseNutrientString($response))) > 0) {
-                    $products->add(array_merge(
-                        ['jan' => $data['jan']],
-                        $this->yahooParser->parseProductInfo($response),
-                        $nutrients
-                    ));
+            function (Response $response) use ($nutrients) {
+                if (count($nutrient = $this->nutrientParser->parse($this->yahooParser->parseNutrientString($response))) > 0) {
+                    $nutrients->add($nutrient);
                 }
             }
         )
             ->promise()
             ->wait();
 
-        return $products->filter()->values();
+        return array_merge([
+            'jan'       => (int) $data['jan'],
+            'nutrients' => $nutrients->filter()->values(),
+        ], $product);
     }
 }

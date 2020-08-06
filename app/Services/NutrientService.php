@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 
 class NutrientService
 {
-    public function getBestProduct(Collection $products): array
+    public function getBestNutrient(Collection $nutrients): array
     {
-        return $products->reduce(function ($carry, $item) {
+        return $nutrients->reduce(function ($carry, $item) {
             if ($this->proof($carry) < abs($item['score'] ?? 0)) {
                 return $carry;
             }
@@ -17,13 +17,13 @@ class NutrientService
         });
     }
 
-    protected function proof(?array $product)
+    protected function proof(?array $nutrient)
     {
         return abs(
-            $product['energy'] ?? 0 - (
-                $product['protein'] ?? 0 * 4
-                + $product['lipid'] ?? 0 * 9
-                + $product['carbohydrate'] ?? 0 * 4
+            $nutrient['energy'] ?? 0 - (
+                $nutrient['protein'] ?? 0 * 4
+                + $nutrient['lipid'] ?? 0 * 9
+                + $nutrient['carbohydrate'] ?? 0 * 4
             )
         );
     }

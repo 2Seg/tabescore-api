@@ -34,7 +34,7 @@ class NutrientParser implements ParserInterface
                 preg_match($pat2, implode('', $matches), $matches2);
 
                 if (count($matches2) > 0) {
-                    $nutrients[$key] = $matches2[0];
+                    $nutrients[$key] = (float) $matches2[0];
                 }
             }
         }

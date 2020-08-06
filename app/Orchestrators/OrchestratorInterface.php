@@ -8,7 +8,7 @@ interface OrchestratorInterface
      * Orchestrate the logic between components
      *
      * @param  array $data
-     * @return mixed
+     * @return array
      */
     public function orchestrate(array $data);
 }
