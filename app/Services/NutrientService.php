@@ -20,10 +20,10 @@ class NutrientService
     protected function proof(?array $nutrient)
     {
         return abs(
-            $nutrient['energy'] ?? 0 - (
-                $nutrient['protein'] ?? 0 * 4
-                + $nutrient['lipid'] ?? 0 * 9
-                + $nutrient['carbohydrate'] ?? 0 * 4
+            ($nutrient['energy'] ?? 0) - (
+                ($nutrient['protein'] ?? 0) * 4
+                + ($nutrient['lipid'] ?? 0) * 9
+                + ($nutrient['carbohydrate'] ?? 0) * 4
             )
         );
     }
