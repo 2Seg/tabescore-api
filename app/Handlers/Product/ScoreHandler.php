@@ -2,13 +2,13 @@
 
 namespace App\Http\Handlers\Product;
 
+use App\Services\ScoreService;
 use App\Services\NutrientService;
-use App\Http\Services\ScoreService;
 use App\Http\Resources\ProductResource;
 use App\Http\Handlers\HandlerInterface;
 use App\Http\Components\Product\Builder;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Orchestrators\YahooOrchestrator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ScoreHandler implements HandlerInterface
